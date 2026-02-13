@@ -37,8 +37,10 @@ Let me implement this now.
 
 Observation: Your thought has been logged.
 ---
-
+```sh
 Action: $ cd /app/backend && pip install openpyxl && pip freeze > requirements.txt
+```
+```txt
 Observation: Looking in indexes: https://pypi.org/simple, https://d33sy5i8bnduwe.cloudfront.net/simple/
 Collecting openpyxl
   Downloading openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
@@ -50,19 +52,24 @@ Installing collected packages: et-xmlfile, openpyxl
 
 Successfully installed et-xmlfile-2.0.0 openpyxl-3.1.5
 Exit code: 0
-
+```
 ---
 
 Now let me restart the backend to apply the new changes:
+```sh
 Action: $ sudo supervisorctl restart backend
+```
+```txt
 Observation: backend: stopped
 backend: started
 Exit code: 0
-
+```
 ---
 
-
+```sh
 Action: $ sleep 3 && tail -n 50 /var/log/supervisor/backend.*.log
+```
+```txt
 Observation: ==> /var/log/supervisor/backend.err.log <==
 INFO:     Will watch for changes in these directories: ['/app/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
@@ -105,10 +112,11 @@ INFO:     Application startup complete.
 INFO:     10.211.2.36:58896 - "POST /api/calculate-projection HTTP/1.1" 200 OK
 INFO:     10.211.1.41:46038 - "POST /api/calculate-projection HTTP/1.1" 200 OK
 Exit code: 0
-
+```
 ---
 
-Perfect! Backend is running. Now let me take a screenshot to see the application:
+### Perfect! Backend is running. Now let me take a screenshot to see the application:
+```txt
 Action: Screenshotting https://savings-dashboard-14.preview.emergentagent.com
 Observation: Frontend URL: https://savings-dashboard-14.preview.emergentagent.com
 Navigation attempt 1/3
@@ -118,13 +126,12 @@ Navigation attempt 1/3
 Found 2 images
 Analyze the results and take appropriate action.
 Console logs saved: /root/.emergent/automation_output/20260213_113308/console_20260213_113308.log
-
-https://static.prod-images.emergentagent.com/jobs/a5e158a0-f8d1-4b31-8062-2f059ed7d199/images/09fc386954422b3dadda237442e66e6c1c600221066256e4accbc818757bbeb7.jpeg
-https://static.prod-images.emergentagent.com/jobs/a5e158a0-f8d1-4b31-8062-2f059ed7d199/images/0ba48bd0210e98fe740166d9a54474c92e1197bd3437e601dcc7de19ee187a8c.jpeg
+```
 
 ---
 
-Great! The app is working perfectly! Now let me test the Excel download functionality with a curl test:
+### Great! The app is working perfectly! Now let me test the Excel download functionality with a curl test:
+```sh
 Action: $ API_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d '=' -f2) && curl -X POST "$API_URL/api/export-excel" \
   -H "Content-Type: application/json" \
   -d '{
@@ -136,6 +143,8 @@ Action: $ API_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d '=' -
     ]
   }' \
   --output /tmp/test_expense_tracker.xlsx && echo "Excel file downloaded successfully" && ls -lh /tmp/test_expense_tracker.xlsx
+```
+```txt
 Observation: Excel file downloaded successfully
 -rw-r--r-- 1 root root 9.1K Feb 13 11:33 /tmp/test_expense_tracker.xlsx
 [stderr]   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -145,10 +154,11 @@ Observation: Excel file downloaded successfully
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
 100  9654    0  9309  100   345  48862   1810 --:--:-- --:--:-- --:--:-- 50544
 Exit code: 0
-
+```
 ---
 
-Perfect! The Excel file is being generated successfully. Now let me call the testing subagent to do comprehensive testing:
+### Perfect! The Excel file is being generated successfully. Now let me call the testing subagent to do comprehensive testing:
+```sh
 Action: {
   "original_problem_statement_and_user_choices_inputs": "Build an Excel-based expense tracker for monthly expenses with visualization and 5-year savings projection to reach ₹1 Crore. Monthly income: ₹92,000. User has predefined expense categories including Savings (SIP, LIC), Education (Scaler EMI, Anu Fees), Home spending, Room spending, Bike expenses, and Personal spending. Target: ₹1 Crore in 5 years. User wants: downloadable Excel file with all data, charts (pie and bar), category breakdown, and savings projections.",
   
@@ -189,6 +199,4 @@ Action: {
   }
 }
 Observation: report_file: /app/test_reports/iteration_1.json
-
----
-
+```
